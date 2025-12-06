@@ -59,7 +59,11 @@ def avg_no_words(file_list, text_corpus):
     
     # draw histograms of par/q/a lenghts    
     draw_hist(no_words_p, no_words_q, no_words_a)
-    draw_pie(second_word)  
+    draw_pie(second_word)
+
+    # additional plots for project report
+    draw_scatter(no_words_q, no_words_a)
+    draw_wordcloud(words_p, words_q, words_a)
     
         
 def draw_hist(no_words_p, no_words_q, no_words_a):
@@ -111,6 +115,33 @@ def draw_pie(second_word):
     plt.savefig("second-word-qns.pdf", transparent = True, bbox_inches = 'tight')
     plt.close()
     
+
+def draw_scatter(no_words_q, no_words_a):
+
+    plt.figure(figsize=(7, 7))  
+    plt.scatter(no_words_q, no_words_a, alpha = 0.5, edgecolors = 'black')
+    plt.xlabel('Question Length (# of words)', fontsize = 18)
+    plt.ylabel('Answer Length (# of words)', fontsize = 18)
+    plt.xticks(fontsize = 15)
+    plt.yticks(fontsize = 15)
+    plt.savefig("correlation-qa.pdf", transparent = True, bbox_inches = 'tight')
+    plt.close()
+
+
+def draw_wordcloud(words_p, words_q, words_a):
+
+    from wordcloud import WordCloud
+
+    all_words = words_p + words_q + words_a
+    wordcloud = WordCloud(width = 800, height = 800, background_color = "white").generate(" ".join(all_words))
+
+    plt.figure(figsize=(7, 7))
+    plt.imshow(wordcloud)
+    plt.axis('off')
+    plt.title("Most Common Words Across Passages & QA")
+    plt.savefig("wordcloud.pdf", transparent = True, bbox_inches = 'tight')
+    plt.close()
+
 
 def calculate_entailment(file_list):
   
